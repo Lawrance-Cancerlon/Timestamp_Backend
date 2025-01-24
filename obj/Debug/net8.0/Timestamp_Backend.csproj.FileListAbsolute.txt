@@ -59,3 +59,4 @@ D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\refint\Timestamp_Backen
 D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\Timestamp_Backend.pdb
 D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\Timestamp_Backend.genruntimeconfig.cache
 D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\ref\Timestamp_Backend.dll
+D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\Timestamp_Backend.sourcelink.json
