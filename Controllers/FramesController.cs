@@ -48,9 +48,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
         if (id!= null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (themeId!= null) filter &= filterBuilder.Eq(x => x.ThemeId, themeId);
         if (count!= null) filter &= filterBuilder.Eq(x => x.Count, count);
-        List<Frame> framesList = await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync();
-        List<ReturnFrameRecord> frames = [.. await Task.WhenAll(framesList.Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))];
-        return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>(frames));
+        return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>([.. await Task.WhenAll((await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync()).Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))]));
     }
 
     [HttpPut("{id}")]
