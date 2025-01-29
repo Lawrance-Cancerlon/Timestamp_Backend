@@ -42,7 +42,7 @@ public class FiltersController(DatabaseService database, IAuthenticationService 
         var filterBuilder = Builders<Filter>.Filter;
         var filter = filterBuilder.Empty;
         if (id != null) filter &= filterBuilder.Eq(x => x.Id, id);
-        return Ok(new ReturnListRecord<Filter>(await _database.GetCollection<Filter>("filters").Find(filter).ToListAsync()));
+        return Ok(new ReturnDataRecord<List<Filter>>(await _database.GetCollection<Filter>("filters").Find(filter).ToListAsync()));
     }
 
     [HttpPut("{id}")]

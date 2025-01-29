@@ -49,8 +49,12 @@ public record class CreateFrameRecord
     public int Price { get; set; }
     [JsonPropertyName("layouts")]
     public List<LayoutRecord> Layouts { get; set; } = null!;
-    [JsonPropertyName("url")]
-    public string Url { get; set; } = null!;
+}
+
+public record class CreatePageRecord
+{
+    [JsonPropertyName("imageCount")]
+    public int ImageCount { get; set; }
 }
 
 public record class CreateThemeRecord

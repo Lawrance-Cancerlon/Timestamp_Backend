@@ -10,10 +10,11 @@ namespace Timestamp_Backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class FramesController(DatabaseService database, IAuthenticationService authentication) : ControllerBase
+public class FramesController(DatabaseService database, IAuthenticationService authentication, StorageService storage) : ControllerBase
 {
     private readonly DatabaseService _database = database;
     private readonly IAuthenticationService _authentication = authentication;
+    private readonly StorageService _storage = storage;
 
     [HttpPost]
     [Authorize]
@@ -27,7 +28,6 @@ public class FramesController(DatabaseService database, IAuthenticationService a
             Count = createFrame.Count,
             Price = createFrame.Price,
             Layouts = createFrame.Layouts,
-            Url = createFrame.Url,
         };
         await _database.GetCollection<Frame>("frames").InsertOneAsync(frame);
         User actor = await _database.GetCollection<User>("users").Find(x => x.IdentityId == _authentication.GetIdentity(token)).FirstOrDefaultAsync();
@@ -36,7 +36,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
             Message = "Created frame " + frame.Name,
             UserId = actor.Id, 
         });
-        return CreatedAtRoute(new {id = frame.Id}, new ReturnDataRecord<Frame>(frame));
+        return CreatedAtRoute(new {id = frame.Id}, new ReturnDataRecord<ReturnFrameRecord>(new ReturnFrameRecord(frame, await _storage.UploadFrameUrl(frame.Id))));
     }
 
     [HttpGet]
@@ -48,7 +48,9 @@ public class FramesController(DatabaseService database, IAuthenticationService a
         if (id!= null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (themeId!= null) filter &= filterBuilder.Eq(x => x.ThemeId, themeId);
         if (count!= null) filter &= filterBuilder.Eq(x => x.Count, count);
-        return Ok(new ReturnListRecord<Frame>(await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync()));
+        List<Frame> framesList = await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync();
+        List<ReturnFrameRecord> frames = [.. await Task.WhenAll(framesList.Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))];
+        return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>(frames));
     }
 
     [HttpPut("{id}")]
@@ -66,7 +68,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
             Message = "Updated frame " + frame.Name,
             UserId = actor.Id, 
         });
-        return Ok(new ReturnDataRecord<Frame>(frame));
+        return Ok(new ReturnDataRecord<ReturnFrameRecord>(new ReturnFrameRecord(frame, await _storage.UploadFrameUrl(frame.Id))));
     }
 
     [HttpDelete("{id}")]
@@ -83,6 +85,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
             Message = "Deleted frame " + frame.Name,
             UserId = actor.Id, 
         });
+        _storage.DeleteFrame(id);
         return Ok(new ReturnDataRecord<Frame>(frame));
     }
 }

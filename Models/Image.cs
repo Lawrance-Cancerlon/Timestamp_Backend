@@ -9,8 +9,6 @@ public class Image
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; } = null!;
-    [BsonElement("Url")]
-    public string Url { get; set; } = null!;
     [BsonElement("CreatedAt")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

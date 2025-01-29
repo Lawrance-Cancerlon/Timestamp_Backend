@@ -13,8 +13,6 @@ public class Transaction
     public string BoothId { get; set; } = null!;
     [BsonElement("Amount")]
     public int Amount { get; set; }
-    [BsonElement("PaymentToken")]
-    public string? PaymentToken { get; set; }
     [BsonElement("Timestamp")]
     public string Timestamp { get; set; } = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString();
 }

@@ -24,6 +24,6 @@ public class UserLogsController(DatabaseService database, IAuthenticationService
         var filter = filterBuilder.Empty;
         if (id != null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (userId != null) filter &= filterBuilder.Eq(x => x.UserId, userId);
-        return Ok(new ReturnListRecord<UserLog>(await _database.GetCollection<UserLog>("userLogs").Find(filter).ToListAsync()));
+        return Ok(new ReturnDataRecord<List<UserLog>>(await _database.GetCollection<UserLog>("userLogs").Find(filter).ToListAsync()));
     }
 }

@@ -14,25 +14,108 @@ public record class ReturnDataRecord<T>
     }
 }
 
-public record class ReturnListRecord<T>
+public record class ReturnThemeRecord
 {
-    [JsonPropertyName("data")]
-    public List<T> Data { get; set; }
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = null!;
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = null!;
+    [JsonPropertyName("config")]
+    public string Config { get; set; } = null!;
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = null!;
 
-    public ReturnListRecord(List<T> data)
+    public ReturnThemeRecord(Theme theme, string url)
     {
-        Data = data;
+        Id = theme.Id;
+        Name = theme.Name;
+        Config = theme.Config;
+        Url = url;
     }
 }
 
-public record class ReturnTokenRecord
+public record class ReturnPageRecord
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = null!;
+    [JsonPropertyName("images")]
+    public List<ReturnImageRecord> Images { get; set; } = null!;
+    [JsonPropertyName("video")]
+    public ReturnVideoRecord Video { get; set; } = null!;
+
+    public ReturnPageRecord(string pageId, List<ReturnImageRecord> images, ReturnVideoRecord video)
+    {
+        Id = pageId;
+        Images = images;
+        Video = video;
+    }
+}
+
+public record class ReturnFrameRecord
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = null!;
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = null!;
+    [JsonPropertyName("themeId")]
+    public string ThemeId { get; set; } = null!;
+    [JsonPropertyName("count")]
+    public int Count { get; set; }
+    [JsonPropertyName("layouts")]
+    public List<LayoutRecord> Layouts { get; set; } = null!;
+    [JsonPropertyName("price")]
+    public int Price { get; set; }
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = null!;
+
+    public ReturnFrameRecord(Frame frame, string url)
+    {
+        Id = frame.Id;
+        Name = frame.Name;
+        ThemeId = frame.ThemeId;
+        Count = frame.Count;
+        Layouts = frame.Layouts;
+        Price = frame.Price;
+        Url = url;
+    }
+}
+
+public record class ReturnImageRecord
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = null!;
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = null!;
+
+    public ReturnImageRecord(string id, string url)
+    {
+        Id = id;
+        Url = url;
+    }
+}
+
+public record class ReturnVideoRecord
+{
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = null!;
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = null!;
+
+    public ReturnVideoRecord(string id, string url)
+    {
+        Id = id;
+        Url = url;
+    }
+}
+
+public record class ReturnTokenRecord<T>
 {
     [JsonPropertyName("data")]
-    public User Data { get; set; }
+    public T Data { get; set; }
     [JsonPropertyName("token")]
     public string Token { get; set; }
 
-    public ReturnTokenRecord(User data, string token)
+    public ReturnTokenRecord(T data, string token)
     {
         Data = data;
         Token = token;

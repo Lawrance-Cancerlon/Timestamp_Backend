@@ -32,6 +32,4 @@ public class Frame
     public List<LayoutRecord> Layouts { get; set; } = null!;
     [BsonElement("Price")]
     public int Price { get; set; }
-    [BsonElement("Url")]
-    public string Url { get; set; } = null!;
 }

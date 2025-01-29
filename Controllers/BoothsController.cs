@@ -49,7 +49,7 @@ public class BoothsController(DatabaseService database, IAuthenticationService a
         if (id != null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (themeId != null) filter &= filterBuilder.Eq(x => x.ThemeId, themeId);
         if (frameId != null) filter &= filterBuilder.AnyEq(x => x.FrameIds, frameId);
-        return Ok(new ReturnListRecord<Booth>(await _database.GetCollection<Booth>("booths").Find(filter).ToListAsync()));
+        return Ok(new ReturnDataRecord<List<Booth>>(await _database.GetCollection<Booth>("booths").Find(filter).ToListAsync()));
     }
 
     [HttpGet("init")]

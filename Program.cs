@@ -1,6 +1,7 @@
 using System.Text;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -53,6 +54,12 @@ builder.Services.AddSingleton<IPaymentService, PaymentService>();
 builder.Services.AddHttpClient<IPaymentService, PaymentService>((serviceProvider, httpClient) =>
 {
     httpClient.BaseAddress = new Uri("https://app.sandbox.midtrans.com/snap/v1/transactions");
+});
+
+//Add Google Cloud Storage Service
+builder.Services.AddSingleton<StorageService>(serviceProvider =>
+{
+    return new StorageService(StorageClient.Create(GoogleCredential.FromFile("storage.json")), UrlSigner.FromCredential(GoogleCredential.FromFile("storage.json")));
 });
 
 var app = builder.Build();

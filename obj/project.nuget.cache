@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CuwGAe60IFw=",
+  "dgSpecHash": "KL1rYmxNJ28=",
   "success": true,
   "projectFilePath": "D:\\Coding Environment\\Timestamp_Backend\\Timestamp_Backend.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,8 @@
     "C:\\Users\\lawra\\.nuget\\packages\\google.apis\\1.68.0\\google.apis.1.68.0.nupkg.sha512",
     "C:\\Users\\lawra\\.nuget\\packages\\google.apis.auth\\1.68.0\\google.apis.auth.1.68.0.nupkg.sha512",
     "C:\\Users\\lawra\\.nuget\\packages\\google.apis.core\\1.68.0\\google.apis.core.1.68.0.nupkg.sha512",
+    "C:\\Users\\lawra\\.nuget\\packages\\google.apis.storage.v1\\1.67.0.3365\\google.apis.storage.v1.1.67.0.3365.nupkg.sha512",
+    "C:\\Users\\lawra\\.nuget\\packages\\google.cloud.storage.v1\\4.10.0\\google.cloud.storage.v1.4.10.0.nupkg.sha512",
     "C:\\Users\\lawra\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.11\\microsoft.aspnetcore.authentication.jwtbearer.8.0.11.nupkg.sha512",
     "C:\\Users\\lawra\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.11\\microsoft.aspnetcore.openapi.8.0.11.nupkg.sha512",
     "C:\\Users\\lawra\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

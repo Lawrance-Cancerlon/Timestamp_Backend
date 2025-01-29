@@ -40,6 +40,6 @@ public class BoothLogsController(DatabaseService database, IAuthenticationServic
         if (id != null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (boothId != null) filter &= filterBuilder.Eq(x => x.BoothId, boothId);
         if (level != null) filter &= filterBuilder.Eq(x => x.Level, level);
-        return Ok(new ReturnListRecord<BoothLog>(await _database.GetCollection<BoothLog>("boothLogs").Find(filter).ToListAsync()));
+        return Ok(new ReturnDataRecord<List<BoothLog>>(await _database.GetCollection<BoothLog>("boothLogs").Find(filter).ToListAsync()));
     }
 }

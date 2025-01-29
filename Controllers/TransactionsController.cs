@@ -35,9 +35,7 @@ public class TransactionsController(DatabaseService database, IAuthenticationSer
             await _database.GetCollection<Transaction>("transactions").DeleteOneAsync(x => x.Id == transaction.Id);
             return StatusCode(StatusCodes.Status500InternalServerError, "Failed to generate payment token.");
         }
-        transaction.PaymentToken = token;
-        await _database.GetCollection<Transaction>("transactions").ReplaceOneAsync(x => x.Id == transaction.Id, transaction);
-        return CreatedAtRoute(new {id = transaction.Id}, new ReturnDataRecord<Transaction>(transaction));
+        return CreatedAtRoute(new {id = transaction.Id}, new ReturnTokenRecord<Transaction>(transaction, token));
     }
 
     [HttpGet]
@@ -50,6 +48,6 @@ public class TransactionsController(DatabaseService database, IAuthenticationSer
         if (id != null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (maxTime != null) filter &= filterBuilder.Lte(x => x.Timestamp, maxTime);
         if (minTime != null) filter &= filterBuilder.Gte(x => x.Timestamp, minTime);
-        return Ok(new ReturnListRecord<Transaction>(await _database.GetCollection<Transaction>("transactions").Find(filter).ToListAsync()));
+        return Ok(new ReturnDataRecord<List<Transaction>>(await _database.GetCollection<Transaction>("transactions").Find(filter).ToListAsync()));
     }
 }

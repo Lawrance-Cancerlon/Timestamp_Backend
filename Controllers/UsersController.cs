@@ -49,7 +49,7 @@ public class UsersController(DatabaseService database, IAuthenticationService au
             Message = "Logged in " + actor.Name,
             UserId = actor.Id, 
         });
-        return Ok(new ReturnTokenRecord(actor, token));
+        return Ok(new ReturnTokenRecord<User>(actor, token));
     }
 
     [HttpGet]
@@ -60,7 +60,7 @@ public class UsersController(DatabaseService database, IAuthenticationService au
         var filterBuilder = Builders<User>.Filter;
         var filter = filterBuilder.Empty;
         if(id != null) filter &= filterBuilder.Eq(x => x.Id, id);
-        return Ok(new ReturnListRecord<User>(await _database.GetCollection<User>("users").Find(filter).ToListAsync()));
+        return Ok(new ReturnDataRecord<List<User>>(await _database.GetCollection<User>("users").Find(filter).ToListAsync()));
     }
 
     [HttpPut]

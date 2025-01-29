@@ -9,10 +9,11 @@ using Timestamp_Backend.Services;
 namespace Timestamp_Backend.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ThemesController(DatabaseService database, IAuthenticationService authentication) : ControllerBase
+public class ThemesController(DatabaseService database, IAuthenticationService authentication, StorageService storage) : ControllerBase
 {
     private readonly DatabaseService _database = database;
     private readonly IAuthenticationService _authentication = authentication;
+    private readonly StorageService _storage = storage;
 
     [HttpPost]
     [Authorize]
@@ -31,7 +32,7 @@ public class ThemesController(DatabaseService database, IAuthenticationService a
             Message = "Created theme " + theme.Name,
             UserId = actor.Id, 
         });
-        return CreatedAtRoute(new {id = theme.Id}, new ReturnDataRecord<Theme>(theme));
+        return CreatedAtRoute(new {id = theme.Id}, new ReturnDataRecord<ReturnThemeRecord>(new ReturnThemeRecord(theme, await _storage.UploadThemeUrl(theme.Id))));
     }
 
     [HttpGet]
@@ -41,7 +42,7 @@ public class ThemesController(DatabaseService database, IAuthenticationService a
         var filterBuilder = Builders<Theme>.Filter;
         var filter = filterBuilder.Empty;
         if (id != null) filter &= filterBuilder.Eq(x => x.Id, id);
-        return Ok(new ReturnListRecord<Theme>(await _database.GetCollection<Theme>("themes").Find(filter).ToListAsync()));
+        return Ok(new ReturnDataRecord<List<ReturnThemeRecord>>([.. await Task.WhenAll((await _database.GetCollection<Theme>("themes").Find(filter).ToListAsync()).Select(async x => new ReturnThemeRecord(x, await _storage.GetThemeUrl(x.Id))))]));
     }
 
     [HttpPut("{id}")]
@@ -59,7 +60,7 @@ public class ThemesController(DatabaseService database, IAuthenticationService a
             Message = "Updated theme " + theme.Name,
             UserId = actor.Id, 
         });
-        return Ok(new ReturnDataRecord<Theme>(theme));
+        return Ok(new ReturnDataRecord<ReturnThemeRecord>(new ReturnThemeRecord(theme, await _storage.UploadThemeUrl(theme.Id))));
     }
 
     [HttpDelete("{id}")]
@@ -76,6 +77,7 @@ public class ThemesController(DatabaseService database, IAuthenticationService a
             Message = "Deleted theme " + theme.Name,
             UserId = actor.Id, 
         });
+        _storage.DeleteTheme(id);
         return Ok(new ReturnDataRecord<Theme>(theme));
     }
 }

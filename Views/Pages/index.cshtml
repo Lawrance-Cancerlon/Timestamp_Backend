@@ -1,7 +1,6 @@
-﻿@using Timestamp_Backend.Models
-@{
-    List<Image> images = ViewBag.images;
-    Video video = ViewBag.video;
+﻿@{
+    List<string> images = ViewBag.images;
+    string video = ViewBag.video;
 }
 
 <!DOCTYPE html>
@@ -22,11 +21,11 @@
             <div class="swiper-wrapper pb-8">
                 @if (images!= null && images.Count > 0)
                 {
-                    foreach (Image image in images)
+                    foreach (string image in images)
                     {
                         <div class="swiper-slide">
                             <div class="bg-slate-50 rounded-2xl h-96 flex justify-center items-center overflow-hidden">
-                                <img src="@image.Url" class="w-full h-full object-cover">
+                                <img src="@image" class="w-full h-full object-cover">
                             </div>
                         </div>
                     }
@@ -36,7 +35,7 @@
                     <div class="swiper-slide">
                         <div class="bg-slate-50 rounded-2xl h-96 flex justify-center items-center overflow-hidden">
                             <video class="w-full h-full object-cover" controls autoplay>
-                                <source src="@video.Url" type="video/mp4">
+                                <source src="@video" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>

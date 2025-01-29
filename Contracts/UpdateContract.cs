@@ -63,8 +63,6 @@ public record class UpdateFrameRecord
     public int? Count { get; set; }
     [JsonPropertyName("layouts")]
     public List<LayoutRecord>? Layouts { get; set; }
-    [JsonPropertyName("url")]
-    public string? Url { get; set; }
 
     public Frame UpdateFrame(Frame frame)
     {
@@ -76,7 +74,6 @@ public record class UpdateFrameRecord
             Price = Price?? frame.Price,
             Count = Count?? frame.Count,
             Layouts = Layouts?? frame.Layouts,
-            Url = Url ?? frame.Url
         };
     }
 }
