@@ -24,9 +24,11 @@
                     foreach (string image in images)
                     {
                         <div class="swiper-slide">
-                            <div class="bg-slate-50 rounded-2xl h-96 flex justify-center items-center overflow-hidden">
-                                <img src="@image" class="w-full h-full object-cover">
-                            </div>
+                            <a href="@image" download>
+                                <div class="bg-slate-50 rounded-2xl h-96 flex justify-center items-center overflow-hidden">
+                                    <img src="@image" class="w-full h-full object-cover">
+                                </div>
+                            </a>
                         </div>
                     }
                 }
@@ -34,7 +36,7 @@
                 {
                     <div class="swiper-slide">
                         <div class="bg-slate-50 rounded-2xl h-96 flex justify-center items-center overflow-hidden">
-                            <video class="w-full h-full object-cover" controls autoplay>
+                            <video class="w-full h-full object-cover" controls>
                                 <source src="@video" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
@@ -46,7 +48,7 @@
         </div>
     </div>
     <div class="flex flex-col justify-start rounded-xl text-slate-800 gap-4">
-        <h1 class="text-xl">Your pictures ready to download</h1>
+        <h1 class="text-xl">Your pictures are ready to be downloaded</h1>
         <span class="text-small font-light italic">
             Keep note that your pictures and video will be deleted along this page after 24 hours. Your link will remain the same thorughout its lifetime.
         </span>
