@@ -127,9 +127,9 @@ public record ReturnInitRecord
     [JsonPropertyName("booth")]
     public Booth Booth { get; set; } = null!;
     [JsonPropertyName("theme")]
-    public Theme Theme { get; set; } = null!;
+    public ReturnThemeRecord Theme { get; set; } = null!;
     [JsonPropertyName("frames")]
-    public List<Frame> Frames { get; set; } = null!;
+    public List<ReturnFrameRecord> Frames { get; set; } = null!;
     [JsonPropertyName("filters")]
     public List<Filter> Filters { get; set; } = null!;
 }

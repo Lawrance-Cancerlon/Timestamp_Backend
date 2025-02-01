@@ -10,10 +10,11 @@ namespace Timestamp_Backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BoothsController(DatabaseService database, IAuthenticationService authentication) : ControllerBase
+public class BoothsController(DatabaseService database, IAuthenticationService authentication, StorageService storage) : ControllerBase
 {
     private readonly DatabaseService _database = database;
     private readonly IAuthenticationService _authentication = authentication;
+    private readonly StorageService _storage = storage;
 
     [HttpPost]
     [Authorize]
@@ -64,8 +65,8 @@ public class BoothsController(DatabaseService database, IAuthenticationService a
         return Ok(new ReturnInitRecord
         {
             Booth = booth,
-            Theme = theme,
-            Frames = frames,
+            Theme = new ReturnThemeRecord(theme, await _storage.GetThemeUrl(theme.Id)),
+            Frames = [.. await Task.WhenAll(frames.Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))],
             Filters = filters,
         });
     }
