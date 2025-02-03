@@ -29,7 +29,7 @@ public class StorageService(StorageClient client, UrlSigner urlSigner)
     public async Task<string> UploadImageUrl(string id)
     {
         UrlSigner.Options options = UrlSigner.Options.FromDuration(TimeSpan.FromDays(1));
-        return await _urlSigner.SignAsync(_bucket.WithHttpMethod(HttpMethod.Put).WithObjectName("images/" + id + ".jpg"), options);
+        return await _urlSigner.SignAsync(_bucket.WithHttpMethod(HttpMethod.Put).WithObjectName("images/" + id + ".jpg").WithContentHeaders([new KeyValuePair<string, IEnumerable<string>>("Content-Disposition", ["attachment"])]), options);
     }
 
     public async Task<string> GetImageUrl(string id)
@@ -58,7 +58,7 @@ public class StorageService(StorageClient client, UrlSigner urlSigner)
     public async Task<string> UploadVideoUrl(string id)
     {
         UrlSigner.Options options = UrlSigner.Options.FromDuration(TimeSpan.FromDays(1));
-        return await _urlSigner.SignAsync(_bucket.WithHttpMethod(HttpMethod.Put).WithObjectName("videos/" + id + ".mp4"), options);
+        return await _urlSigner.SignAsync(_bucket.WithHttpMethod(HttpMethod.Put).WithObjectName("videos/" + id + ".mp4").WithContentHeaders([new KeyValuePair<string, IEnumerable<string>>("Content-Disposition", ["attachment"])]), options);
     }
 
     public async Task<string> GetVideoUrl(string id)
