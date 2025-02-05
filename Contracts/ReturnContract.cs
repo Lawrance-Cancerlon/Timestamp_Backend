@@ -20,8 +20,6 @@ public record class ReturnThemeRecord
     public string Id { get; set; } = null!;
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;
-    [JsonPropertyName("config")]
-    public string Config { get; set; } = null!;
     [JsonPropertyName("url")]
     public string Url { get; set; } = null!;
 
@@ -29,7 +27,6 @@ public record class ReturnThemeRecord
     {
         Id = theme.Id;
         Name = theme.Name;
-        Config = theme.Config;
         Url = url;
     }
 }

@@ -23,7 +23,6 @@ public class ThemesController(DatabaseService database, IAuthenticationService a
         Theme theme = new()
         {
             Name = createTheme.Name,
-            Config = createTheme.Config,
         };
         await _database.GetCollection<Theme>("themes").InsertOneAsync(theme);
         User actor = await _database.GetCollection<User>("users").Find(x => x.IdentityId == _authentication.GetIdentity(token)).FirstOrDefaultAsync();

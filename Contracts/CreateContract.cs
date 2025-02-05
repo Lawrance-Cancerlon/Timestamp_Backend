@@ -61,8 +61,6 @@ public record class CreateThemeRecord
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = null!;
-    [JsonPropertyName("config")]
-    public string Config { get; set; } = null!;
 }
 
 public record class CreateTransactionRecord
