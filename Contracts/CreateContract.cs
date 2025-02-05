@@ -24,7 +24,7 @@ public record class CreateBoothLogRecord
     [JsonPropertyName("message")]
     public string Message { get; set; } = null!;
     [JsonPropertyName("level")]
-    public string Level { get; set; } = null!;
+    public int Level { get; set; }
     [JsonPropertyName("timestamp")]
     public string Timestamp { get; set; } = null!;
 }

@@ -25,6 +25,7 @@ public class BoothsController(DatabaseService database, IAuthenticationService a
         {
             Name = createBooth.Name,
             Description = createBooth.Description,
+            Status = 0,
             ClientKey = createBooth.ClientKey,
             ServerKey = createBooth.ServerKey,
             ThemeId = createBooth.ThemeId,
@@ -42,7 +43,7 @@ public class BoothsController(DatabaseService database, IAuthenticationService a
 
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? themeId, [FromQuery] string? frameId)
+    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? themeId, [FromQuery] string? frameId, [FromQuery] int? status)
     {
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         var filterBuilder = Builders<Booth>.Filter;
@@ -50,6 +51,7 @@ public class BoothsController(DatabaseService database, IAuthenticationService a
         if (id != null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (themeId != null) filter &= filterBuilder.Eq(x => x.ThemeId, themeId);
         if (frameId != null) filter &= filterBuilder.AnyEq(x => x.FrameIds, frameId);
+        if (status != null) filter &= filterBuilder.Eq(x => x.Status, status);
         return Ok(new ReturnDataRecord<List<Booth>>(await _database.GetCollection<Booth>("booths").Find(filter).ToListAsync()));
     }
 

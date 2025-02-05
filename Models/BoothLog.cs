@@ -12,7 +12,7 @@ public class BoothLog
     [BsonElement("Message")]
     public string Message { get; set; } = null!;
     [BsonElement("Level")]
-    public string Level { get; set; } = null!;
+    public int Level { get; set; }
     [BsonElement("BoothId")]
     public string BoothId { get; set; } = null!;
     [BsonElement("Timestamp")]

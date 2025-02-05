@@ -27,12 +27,14 @@ public class BoothLogsController(DatabaseService database, IAuthenticationServic
             BoothId = id,
             Timestamp = createBoothLog.Timestamp,
         };
+        booth.Status = boothLog.Level;
+        await _database.GetCollection<Booth>("booths").ReplaceOneAsync(x => x.Id == id, booth);
         await _database.GetCollection<BoothLog>("boothLogs").InsertOneAsync(boothLog);
         return CreatedAtRoute(new {id = boothLog.Id}, new ReturnDataRecord<BoothLog>(boothLog));
     }
 
     [HttpGet]
-    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? boothId, [FromQuery] string? level)
+    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? boothId, [FromQuery] int? level)
     {
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         var filterBuilder = Builders<BoothLog>.Filter;
