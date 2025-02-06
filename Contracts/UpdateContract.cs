@@ -63,6 +63,8 @@ public record class UpdateFrameRecord
     public int? Count { get; set; }
     [JsonPropertyName("layouts")]
     public List<LayoutRecord>? Layouts { get; set; }
+    [JsonPropertyName("split")]
+    public bool? Split { get; set; }
 
     public Frame UpdateFrame(Frame frame)
     {
@@ -74,6 +76,7 @@ public record class UpdateFrameRecord
             Price = Price?? frame.Price,
             Count = Count?? frame.Count,
             Layouts = Layouts?? frame.Layouts,
+            Split = Split?? frame.Split
         };
     }
 }

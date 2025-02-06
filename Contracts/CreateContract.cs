@@ -49,6 +49,8 @@ public record class CreateFrameRecord
     public int Price { get; set; }
     [JsonPropertyName("layouts")]
     public List<LayoutRecord> Layouts { get; set; } = null!;
+    [JsonPropertyName("split")]
+    public bool Split { get; set; }
 }
 
 public record class CreatePageRecord

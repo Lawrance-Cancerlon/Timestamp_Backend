@@ -28,6 +28,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
             Count = createFrame.Count,
             Price = createFrame.Price,
             Layouts = createFrame.Layouts,
+            Split = createFrame.Split,
         };
         await _database.GetCollection<Frame>("frames").InsertOneAsync(frame);
         User actor = await _database.GetCollection<User>("users").Find(x => x.IdentityId == _authentication.GetIdentity(token)).FirstOrDefaultAsync();
@@ -40,7 +41,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
     }
 
     [HttpGet]
-    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? themeId, [FromQuery] int? count)
+    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? themeId, [FromQuery] int? count, [FromQuery] bool? split)
     {
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         var filterBuilder = Builders<Frame>.Filter;
@@ -48,6 +49,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
         if (id!= null) filter &= filterBuilder.Eq(x => x.Id, id);
         if (themeId!= null) filter &= filterBuilder.Eq(x => x.ThemeId, themeId);
         if (count!= null) filter &= filterBuilder.Eq(x => x.Count, count);
+        if (split!= null) filter &= filterBuilder.Eq(x => x.Split, split);
         return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>([.. await Task.WhenAll((await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync()).Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))]));
     }
 

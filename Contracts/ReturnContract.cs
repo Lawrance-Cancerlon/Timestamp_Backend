@@ -62,6 +62,8 @@ public record class ReturnFrameRecord
     public List<LayoutRecord> Layouts { get; set; } = null!;
     [JsonPropertyName("price")]
     public int Price { get; set; }
+    [JsonPropertyName("split")]
+    public bool Split { get; set; }
     [JsonPropertyName("url")]
     public string Url { get; set; } = null!;
 
@@ -73,6 +75,7 @@ public record class ReturnFrameRecord
         Count = frame.Count;
         Layouts = frame.Layouts;
         Price = frame.Price;
+        Split = frame.Split;
         Url = url;
     }
 }
