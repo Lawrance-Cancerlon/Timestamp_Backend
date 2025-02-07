@@ -41,7 +41,7 @@ public class FramesController(DatabaseService database, IAuthenticationService a
     }
 
     [HttpGet]
-    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? themeId, [FromQuery] int? count, [FromQuery] bool? split)
+    public async Task<ActionResult> Get([FromQuery] string? id, [FromQuery] string? themeId, [FromQuery] int? count, [FromQuery] bool? split, [FromQuery] string? boothId)
     {
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         var filterBuilder = Builders<Frame>.Filter;
@@ -50,6 +50,11 @@ public class FramesController(DatabaseService database, IAuthenticationService a
         if (themeId!= null) filter &= filterBuilder.Eq(x => x.ThemeId, themeId);
         if (count!= null) filter &= filterBuilder.Eq(x => x.Count, count);
         if (split!= null) filter &= filterBuilder.Eq(x => x.Split, split);
+        if (boothId!= null){
+            Booth booth = await _database.GetCollection<Booth>("booths").Find(x => x.Id == boothId).FirstOrDefaultAsync();
+            if (booth == null) return NotFound("Booth not found");
+            filter &= filterBuilder.In(x => x.Id, booth.FrameIds);
+        }
         return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>([.. await Task.WhenAll((await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync()).Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))]));
     }
 
