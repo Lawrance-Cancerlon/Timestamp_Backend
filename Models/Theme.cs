@@ -11,4 +11,6 @@ public class Theme
     public string Id { get; set; } = null!;
     [BsonElement("Name")]
     public string Name { get; set; } = null!;
+    [BsonElement("Config")]
+    public string Config { get; set; } = null!;
 }

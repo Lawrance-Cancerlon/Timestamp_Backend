@@ -85,6 +85,8 @@ public record class UpdateThemeRecord
 {
     [JsonPropertyName("name")]
     public string? Name { get; set; }
+    [JsonPropertyName("config")]
+    public string? Config { get; set; }
 
     public Theme UpdateTheme(Theme theme)
     {
