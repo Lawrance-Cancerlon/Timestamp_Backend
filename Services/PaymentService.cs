@@ -22,6 +22,7 @@ public class PaymentService(HttpClient httpClient) : IPaymentService
                 order_id = id,
                 gross_amount = frame.Price,
             },
+            enabled_payments = new string[] { "other_qris" },
         };
         var paymentKeyBytes = System.Text.Encoding.UTF8.GetBytes(paymentKey + ':');
         _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));

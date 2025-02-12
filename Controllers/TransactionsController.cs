@@ -50,4 +50,18 @@ public class TransactionsController(DatabaseService database, IAuthenticationSer
         if (minTime != null) filter &= filterBuilder.Gte(x => x.Timestamp, minTime);
         return Ok(new ReturnDataRecord<List<Transaction>>(await _database.GetCollection<Transaction>("transactions").Find(filter).ToListAsync()));
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetStatus([FromHeader(Name = "Token")] string boothId, string id)
+    {
+        Response.Headers.Append("Access-Control-Allow-Origin", "*");
+        Booth booth = await _database.GetCollection<Booth>("booths").Find(x => x.Id == boothId).FirstOrDefaultAsync();
+        if (booth == null) return Unauthorized();
+        HttpClient client = new();
+        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(booth.ServerKey + ':')));
+        HttpResponseMessage response = await client.GetAsync("https://api.sandbox.midtrans.com/v2/" + id + "/status");
+        var result = await response.Content.ReadFromJsonAsync<object>();
+        return Ok(result);
+    }
 }
