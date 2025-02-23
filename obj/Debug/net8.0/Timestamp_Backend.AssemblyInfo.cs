@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Timestamp_Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3602d588839a8bb347ceaa8eb13ccc3c7a626d05")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d5871d5079a54fcc44ca8acedf707ca195c536e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Timestamp_Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Timestamp_Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

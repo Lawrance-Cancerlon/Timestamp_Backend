@@ -58,6 +58,18 @@ public class FramesController(DatabaseService database, IAuthenticationService a
         return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>([.. await Task.WhenAll((await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync()).Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))]));
     }
 
+    [HttpGet("theme")]
+    public async Task<ActionResult> GetTheme([FromHeader(Name = "Token")] string id)
+    {
+        Response.Headers.Append("Access-Control-Allow-Origin", "*");
+        Booth booth = await _database.GetCollection<Booth>("booths").Find(x => x.Id == id).FirstOrDefaultAsync();
+        if (booth == null) return Unauthorized();
+        var frames = await _database.GetCollection<Frame>("frames").Find(Builders<Frame>.Filter.In(x => x.Id, booth.FrameIds)).ToListAsync();
+        var uniqueThemes = frames.Select(x => x.ThemeId).Distinct().ToList();
+        var themes = await _database.GetCollection<Theme>("themes").Find(Builders<Theme>.Filter.In(x => x.Id, uniqueThemes)).ToListAsync();
+        return Ok(new ReturnDataRecord<List<Theme>>(themes));
+    }
+
     [HttpPut("{id}")]
     [Authorize]
     public async Task<ActionResult> Update([FromHeader(Name = "Authorization")] string token, string id, UpdateFrameRecord updateFrame)
@@ -91,6 +103,10 @@ public class FramesController(DatabaseService database, IAuthenticationService a
             UserId = actor.Id, 
         });
         _storage.DeleteFrame(id);
+        await _database.GetCollection<Booth>("booths").UpdateManyAsync(
+            Builders<Booth>.Filter.AnyEq(x => x.FrameIds, id),
+            Builders<Booth>.Update.Pull(x => x.FrameIds, id)
+        );
         return Ok(new ReturnDataRecord<Frame>(frame));
     }
 }

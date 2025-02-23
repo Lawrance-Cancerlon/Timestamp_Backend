@@ -26,10 +26,10 @@ public class TransactionsController(DatabaseService database, IAuthenticationSer
         Transaction transaction = new()
         {
             BoothId = id,
-            Amount = frame.Price,
+            Amount = frame.Price*createTransaction.Quantity,
         };
         await _database.GetCollection<Transaction>("transactions").InsertOneAsync(transaction);
-        string? token = await _paymentService.GeneratePaymentToken(transaction.Id, booth.ServerKey, frame);
+        string? token = await _paymentService.GeneratePaymentToken(transaction.Id, booth.ServerKey, frame, createTransaction.Quantity);
         if (token == null)
         {
             await _database.GetCollection<Transaction>("transactions").DeleteOneAsync(x => x.Id == transaction.Id);

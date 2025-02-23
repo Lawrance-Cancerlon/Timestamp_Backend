@@ -71,6 +71,8 @@ public record class CreateTransactionRecord
 {
     [JsonPropertyName("frameId")]
     public string FrameId { get; set; } = null!;
+    [JsonPropertyName("quantity")]
+    public int Quantity { get; set; }
 }
 
 public record class CreateUserRecord

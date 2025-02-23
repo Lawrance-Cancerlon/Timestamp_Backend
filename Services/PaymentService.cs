@@ -6,21 +6,21 @@ namespace Timestamp_Backend.Services;
 
 public interface IPaymentService
 {
-    public Task<string?> GeneratePaymentToken(string id, string paymentKey, Frame frame);
+    public Task<string?> GeneratePaymentToken(string id, string paymentKey, Frame frame, int quantity);
 }
 
 public class PaymentService(HttpClient httpClient) : IPaymentService
 {
     private readonly HttpClient _httpClient = httpClient;
 
-    public async Task<string?> GeneratePaymentToken(string id, string paymentKey, Frame frame)
+    public async Task<string?> GeneratePaymentToken(string id, string paymentKey, Frame frame, int quantity)
     {
         var request = new
         {
             transaction_details = new
             {
                 order_id = id,
-                gross_amount = frame.Price,
+                gross_amount = frame.Price*quantity,
             },
             enabled_payments = new string[] { "other_qris" },
         };
