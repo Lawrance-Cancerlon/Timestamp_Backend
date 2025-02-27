@@ -81,19 +81,21 @@ public class UsersController(DatabaseService database, IAuthenticationService au
         return Ok(new ReturnDataRecord<User>(actor));
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
-    public async Task<ActionResult> Delete([FromHeader(Name = "Authorization")] string token)
+    public async Task<ActionResult> Delete([FromHeader(Name = "Authorization")] string token, string id)
     {
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
+        User user = await _database.GetCollection<User>("users").Find(x => x.Id == id).FirstOrDefaultAsync();
+        if(user == null) return NotFound("User not found");
+        _authentication.Delete(user.IdentityId);
+        await _database.GetCollection<User>("users").DeleteOneAsync(x => x.Id == user.Id);
         User actor = await _database.GetCollection<User>("users").Find(x => x.IdentityId == _authentication.GetIdentity(token)).FirstOrDefaultAsync();
-        _authentication.Delete(_authentication.GetIdentity(token));
-        await _database.GetCollection<User>("users").DeleteOneAsync(x => x.Id == actor.Id);
         await _database.GetCollection<UserLog>("userLogs").InsertOneAsync(new UserLog
         {
-            Message = "Deleted admin " + actor.Name,
+            Message = "Deleted admin " + user.Name,
             UserId = actor.Id, 
         });
-        return Ok(new ReturnDataRecord<User>(actor));
+        return Ok(new ReturnDataRecord<User>(user));
     }
 }

@@ -94,6 +94,7 @@ public record class UpdateThemeRecord
         {
             Id = theme.Id,
             Name = Name ?? theme.Name,
+            Config = Config?? theme.Config
         };
     }
 }

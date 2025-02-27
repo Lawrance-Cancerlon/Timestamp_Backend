@@ -29,6 +29,7 @@ public record class ReturnThemeRecord
     {
         Id = theme.Id;
         Name = theme.Name;
+        Config = theme.Config;
         Url = url;
     }
 }
