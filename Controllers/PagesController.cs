@@ -35,7 +35,7 @@ public class PageController(DatabaseService database, IAuthenticationService aut
             VideoId = video.Id,
         };
         await _database.GetCollection<Page>("pages").InsertOneAsync(page);
-        return CreatedAtRoute(new {id = page.Id}, new ReturnPageRecord(page.Id, [.. await Task.WhenAll(imageIds.Select(async x => new ReturnImageRecord(x, await _storage.UploadImageUrl(x))))], new ReturnVideoRecord(video.Id, await _storage.UploadVideoUrl(video.Id))));
+        return CreatedAtRoute(new {id = page.Id}, new ReturnDataRecord<ReturnPageRecord>(new ReturnPageRecord(page.Id, [.. await Task.WhenAll(imageIds.Select(async x => new ReturnImageRecord(x, await _storage.UploadImageUrl(x))))], new ReturnVideoRecord(video.Id, await _storage.UploadVideoUrl(video.Id)))));
     }
 
     [HttpGet("views/{id:length(24)}")]

@@ -100,7 +100,6 @@ public class AuthenticationService(HttpClient httpClient) : IAuthenticationServi
             ValidAudience = config["TokenSettings:Audience"],
             ValidateLifetime = true,
         };
-        Console.WriteLine(config["TokenSettings:Issuer"]);
     }
 }
 
