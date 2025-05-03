@@ -10,11 +10,12 @@ namespace Timestamp_Backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TransactionsController(DatabaseService database, IAuthenticationService authentication, IPaymentService paymentService) : ControllerBase
+public class TransactionsController(DatabaseService database, IAuthenticationService authentication, IPaymentService paymentService, IRefundService refundService) : ControllerBase
 {
     private readonly DatabaseService _database = database;
     private readonly IAuthenticationService _authentication = authentication;
     private readonly IPaymentService _paymentService = paymentService;
+    private readonly IRefundService _refundService = refundService;
 
     [HttpPost]
     public async Task<ActionResult> Create([FromHeader(Name = "Token")] string id, CreateTransactionRecord createTransaction)
@@ -36,6 +37,19 @@ public class TransactionsController(DatabaseService database, IAuthenticationSer
             return StatusCode(StatusCodes.Status500InternalServerError, "Failed to generate payment token.");
         }
         return CreatedAtRoute(new {id = transaction.Id}, new ReturnTokenRecord<Transaction>(transaction, token));
+    }
+
+    [HttpPost("refund/{id}")]
+    public async Task<ActionResult> Refund(string id, [FromHeader(Name = "Token")] string boothId)
+    {
+        Response.Headers.Append("Access-Control-Allow-Origin", "*");
+        Booth booth = await _database.GetCollection<Booth>("booths").Find(x => x.Id == boothId).FirstOrDefaultAsync();
+        if (booth == null) return Unauthorized();
+        Transaction transaction = await _database.GetCollection<Transaction>("transactions").Find(x => x.Id == id).FirstOrDefaultAsync();
+        if (transaction == null) return NotFound();
+        var response = await _refundService.Refund(id, booth.ServerKey);
+        var result = await response.Content.ReadFromJsonAsync<object>();
+        return Ok(result);
     }
 
     [HttpGet]

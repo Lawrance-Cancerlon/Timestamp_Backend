@@ -63,3 +63,6 @@ D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\Timestamp_Backend.sourc
 D:\Coding Environment\Timestamp_Backend\bin\Debug\net8.0\Google.Apis.Storage.v1.dll
 D:\Coding Environment\Timestamp_Backend\bin\Debug\net8.0\Google.Cloud.Storage.V1.dll
 D:\Coding Environment\Timestamp_Backend\bin\Debug\net8.0\storage.json
+D:\Coding Environment\Timestamp_Backend\bin\Debug\net8.0\Timestamp_Backend.staticwebassets.endpoints.json
+D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\Coding Environment\Timestamp_Backend\obj\Debug\net8.0\staticwebassets\msbuild.Timestamp_Backend.Microsoft.AspNetCore.StaticWebAssetEndpoints.props

@@ -56,6 +56,12 @@ builder.Services.AddHttpClient<IPaymentService, PaymentService>((serviceProvider
     httpClient.BaseAddress = new Uri("https://app.sandbox.midtrans.com/snap/v1/transactions");
 });
 
+builder.Services.AddSingleton<IRefundService, RefundService>();
+builder.Services.AddHttpClient<IRefundService, RefundService>((serviceProvider, httpClient) =>
+{
+    httpClient.BaseAddress = new Uri("https://api.sandbox.midtrans.com/v2/");
+});
+
 //Add Google Cloud Storage Service
 builder.Services.AddSingleton<StorageService>(serviceProvider =>
 {
