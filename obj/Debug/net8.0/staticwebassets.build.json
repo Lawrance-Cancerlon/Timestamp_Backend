@@ -1,12 +1,11 @@
 {
   "Version": 1,
-  "Hash": "ZtOOP22wd8vBEN91Q3YZHO8mewfggkedYxL1yvqY+V4=",
+  "Hash": "RQ3SQKVo56rAa98Iumic7C+Gard6nXIw/1a+8ihGm1o=",
   "Source": "Timestamp_Backend",
   "BasePath": "_content/Timestamp_Backend",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "Assets": []
 }
