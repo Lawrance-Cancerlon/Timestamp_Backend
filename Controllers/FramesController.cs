@@ -58,6 +58,18 @@ public class FramesController(DatabaseService database, IAuthenticationService a
         return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>([.. await Task.WhenAll((await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync()).Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))]));
     }
 
+    [HttpGet("preview")]
+    public async Task<ActionResult> GetPreview([FromQuery] bool? split)
+    {
+        Response.Headers.Append("Access-Control-Allow-Origin", "*");
+        var filterBuilder = Builders<Frame>.Filter;
+        var filter = filterBuilder.Empty;
+        if (split != null) filter &= filterBuilder.Eq(x => x.Split, split);
+        var frames = await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync();
+        var uniqueFrames = frames.GroupBy(x => x.Count).Select(g => g.First()).ToList();
+        return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>([.. await Task.WhenAll(uniqueFrames.Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))]));
+    }
+
     [HttpGet("theme")]
     public async Task<ActionResult> GetTheme([FromHeader(Name = "Token")] string id)
     {
