@@ -59,12 +59,17 @@ public class FramesController(DatabaseService database, IAuthenticationService a
     }
 
     [HttpGet("preview")]
-    public async Task<ActionResult> GetPreview([FromQuery] bool? split)
+    public async Task<ActionResult> GetPreview([FromHeader(Name = "Token")] string boothId, [FromQuery] bool? split)
     {
         Response.Headers.Append("Access-Control-Allow-Origin", "*");
         var filterBuilder = Builders<Frame>.Filter;
         var filter = filterBuilder.Empty;
         if (split != null) filter &= filterBuilder.Eq(x => x.Split, split);
+        if (boothId!= null){
+            Booth booth = await _database.GetCollection<Booth>("booths").Find(x => x.Id == boothId).FirstOrDefaultAsync();
+            if (booth == null) return NotFound("Booth not found");
+            filter &= filterBuilder.In(x => x.Id, booth.FrameIds);
+        }
         var frames = await _database.GetCollection<Frame>("frames").Find(filter).ToListAsync();
         var uniqueFrames = frames.GroupBy(x => x.Count).Select(g => g.First()).ToList();
         return Ok(new ReturnDataRecord<List<ReturnFrameRecord>>([.. await Task.WhenAll(uniqueFrames.Select(async x => new ReturnFrameRecord(x, await _storage.GetFrameUrl(x.Id))))]));
