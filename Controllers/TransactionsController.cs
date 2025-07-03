@@ -10,10 +10,9 @@ namespace Timestamp_Backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TransactionsController(DatabaseService database, IAuthenticationService authentication, IPaymentService paymentService, IRefundService refundService) : ControllerBase
+public class TransactionsController(DatabaseService database, IPaymentService paymentService, IRefundService refundService) : ControllerBase
 {
     private readonly DatabaseService _database = database;
-    private readonly IAuthenticationService _authentication = authentication;
     private readonly IPaymentService _paymentService = paymentService;
     private readonly IRefundService _refundService = refundService;
 

@@ -2,3 +2,5 @@ app.yaml
 appsettings.json
 firebase.json
 storage.json
+bin/
+obj/
